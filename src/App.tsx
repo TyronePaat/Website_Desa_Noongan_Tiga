@@ -33,7 +33,21 @@ const App: React.FC = () => {
       try {
         const savedData = localStorage.getItem('desa-data');
         if (savedData) {
-          setData(JSON.parse(savedData));
+          const parsedData = JSON.parse(savedData);
+          
+          // MIGRATION: If old data doesn't have informasiUmum, merge with initialData
+          if (!parsedData.informasiUmum) {
+            const migratedData = {
+              ...initialData,
+              ...parsedData,
+              informasiUmum: initialData.informasiUmum
+            };
+            setData(migratedData);
+            // Save migrated data back to localStorage
+            localStorage.setItem('desa-data', JSON.stringify(migratedData));
+          } else {
+            setData(parsedData);
+          }
         }
       } catch (error) {
         console.log('No saved data, using defaults');
