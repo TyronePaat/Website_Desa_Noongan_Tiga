@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Home, FileText, MapPin, BarChart3, Image, FolderOpen, Phone, Users, Menu, X, LogIn, LogOut, Edit } from 'lucide-react';
+import { Home, FileText, MapPin, BarChart3, Image, FolderOpen, Phone, Users, Menu, X, LogIn, LogOut, Edit, Building2 } from 'lucide-react';
 
-// Import Data and Types
 import { initialData } from './data/initialData';
-// --- REVISI: Import Potensi ---
 import type { AppData, MenuItem, Potensi } from './data/types';
 
-// Import Page Components
-// Pastikan file-file ini ada di folder src/pages/
 import HomePage from './pages/HomePage';
 import ProfilPage from './pages/ProfilPage';
+import PemerintahDesaPage from './pages/PemerintahDesaPage'; // BARU
 import PotensiPage from './pages/PotensiPage';
 import PetaPage from './pages/PetaPage';
 import DataPage from './pages/DataPage';
@@ -17,14 +14,11 @@ import InfografisPage from './pages/InfografisPage';
 import DokumenPage from './pages/DokumenPage';
 import KontakPage from './pages/KontakPage';
 import AdminPanel from './pages/AdminPanel';
-// --- REVISI: Import halaman detail baru ---
 import PotensiDetailPage from './pages/PotensiDetailPage';
 
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<string>('home');
-  // --- REVISI: State baru untuk melacak potensi yang dipilih ---
   const [selectedPotensi, setSelectedPotensi] = useState<Potensi | null>(null);
-
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [adminPassword, setAdminPassword] = useState<string>('');
@@ -34,7 +28,6 @@ const App: React.FC = () => {
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const [loginError, setLoginError] = useState<string>('');
 
-  // Load data from localStorage
   useEffect(() => {
     const loadData = () => {
       try {
@@ -51,7 +44,6 @@ const App: React.FC = () => {
     loadData();
   }, []);
 
-  // Save data to localStorage
   const saveData = (newData: AppData) => {
     setData(newData);
     try {
@@ -74,7 +66,6 @@ const App: React.FC = () => {
 
   const handleLogout = () => {
     setIsAdmin(false);
-    // --- REVISI: Reset state detail saat logout ---
     setSelectedPotensi(null);
     setCurrentPage('home');
   };
@@ -87,9 +78,11 @@ const App: React.FC = () => {
     );
   }
 
+  // DIUBAH: Menu items dengan Pemerintah Desa
   const menuItems: MenuItem[] = [
     { id: 'home', label: 'Beranda', icon: Home },
     { id: 'profil', label: 'Profil Desa', icon: FileText },
+    { id: 'pemerintah', label: 'Pemerintah Desa', icon: Building2 }, // BARU
     { id: 'potensi', label: 'Potensi Desa', icon: Users },
     { id: 'peta', label: 'Peta Desa', icon: MapPin },
     { id: 'data', label: 'Data Desa', icon: BarChart3 },
@@ -102,39 +95,33 @@ const App: React.FC = () => {
     menuItems.push({ id: 'admin', label: 'Admin Panel', icon: Edit });
   }
 
-  // --- REVISI: Fungsi navigasi baru ---
   const handleNavigate = (page: string) => {
     setCurrentPage(page);
-    setSelectedPotensi(null); // Reset detail view saat ganti halaman
-    setMobileMenuOpen(false); // Tutup menu mobile
+    setSelectedPotensi(null);
+    setMobileMenuOpen(false);
   };
 
-  // Fungsi untuk merender halaman berdasarkan state
+  // DIUBAH: Render page dengan halaman baru
   const renderPage = () => {
     switch (currentPage) {
       case 'home': return <HomePage data={data} />;
       case 'profil': return <ProfilPage data={data} />;
-
-      // --- REVISI: Logika Halaman Potensi ---
+      case 'pemerintah': return <PemerintahDesaPage data={data} />; // BARU
       case 'potensi':
-        // Jika ada potensi yang dipilih, tampilkan halaman detail
         if (selectedPotensi) {
           return (
             <PotensiDetailPage
               potensi={selectedPotensi}
-              onBack={() => setSelectedPotensi(null)} // Fungsi untuk kembali
+              onBack={() => setSelectedPotensi(null)}
             />
           );
         }
-        // Jika tidak, tampilkan daftar potensi
         return (
           <PotensiPage
             data={data}
-            onPotensiClick={setSelectedPotensi} // Kirim fungsi untuk "memilih"
+            onPotensiClick={setSelectedPotensi}
           />
         );
-      // --- AKHIR REVISI ---
-
       case 'peta': return <PetaPage data={data} />;
       case 'data': return <DataPage data={data} />;
       case 'infografis': return <InfografisPage data={data} setLightboxImage={setLightboxImage} />;
@@ -147,7 +134,6 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <header className="bg-white shadow-md sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
@@ -161,14 +147,12 @@ const App: React.FC = () => {
               </div>
             </div>
 
-            {/* Desktop Menu --- REVISI: onClick dan className --- */}
             <nav className="hidden lg:flex space-x-1">
               {menuItems.map(item => (
                 <button
                   key={item.id}
-                  onClick={() => handleNavigate(item.id)} // Gunakan handleNavigate
+                  onClick={() => handleNavigate(item.id)}
                   className={`px-4 py-2 rounded-lg transition-colors ${
-                    // Highlight tab 'potensi' hanya jika tidak ada sub-item yang dipilih
                     currentPage === item.id && !selectedPotensi
                       ? 'bg-green-700 text-white'
                       : 'text-gray-700 hover:bg-green-50'
@@ -179,7 +163,6 @@ const App: React.FC = () => {
               ))}
             </nav>
 
-            {/* Mobile Menu Button */}
             <button
               className="lg:hidden text-gray-700"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -187,7 +170,6 @@ const App: React.FC = () => {
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
 
-            {/* Auth Button Desktop */}
             <div className="hidden lg:block">
               {isAdmin ? (
                 <button
@@ -210,13 +192,12 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          {/* Mobile Menu --- REVISI: onClick dan className --- */}
           {mobileMenuOpen && (
             <nav className="lg:hidden mt-4 space-y-2">
               {menuItems.map(item => (
                 <button
                   key={item.id}
-                  onClick={() => handleNavigate(item.id)} // Gunakan handleNavigate
+                  onClick={() => handleNavigate(item.id)}
                   className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
                     currentPage === item.id && !selectedPotensi
                       ? 'bg-green-700 text-white'
@@ -247,12 +228,10 @@ const App: React.FC = () => {
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         {renderPage()}
       </main>
 
-      {/* Footer */}
       <footer className="bg-green-700 text-white mt-16">
         <div className="container mx-auto px-4 py-8">
           <div className="grid md:grid-cols-3 gap-8">
@@ -281,7 +260,6 @@ const App: React.FC = () => {
         </div>
       </footer>
 
-      {/* Login Modal */}
       {showLoginModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg p-6 max-w-md w-full">
@@ -320,7 +298,6 @@ const App: React.FC = () => {
         </div>
       )}
 
-      {/* Lightbox */}
       {lightboxImage && (
         <div 
           className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 p-4"
@@ -340,4 +317,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-

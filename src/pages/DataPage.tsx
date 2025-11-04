@@ -16,7 +16,9 @@ const DataPage: React.FC<{ data: AppData }> = ({ data }) => {
             <div key={idx}>
               <div className="flex justify-between text-sm mb-1">
                 <span className="text-gray-700">{item.label}</span>
-                <span className="font-bold text-gray-900">{item.value} ({((item.value/total)*100).toFixed(1)}%)</span>
+                <span className="font-bold text-gray-900">
+                  {item.value} ({((item.value/total)*100).toFixed(1)}%)
+                </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-3">
                 <div
@@ -34,13 +36,13 @@ const DataPage: React.FC<{ data: AppData }> = ({ data }) => {
     );
   };
 
+  // DIUBAH: Hapus tab 'aparatur'
   const tabs = [
     { id: 'pendidikan', label: 'Pendidikan' },
     { id: 'pekerjaan', label: 'Pekerjaan' },
     { id: 'agama', label: 'Agama' },
     { id: 'jenisKelamin', label: 'Jenis Kelamin' },
-    { id: 'kelompokUmur', label: 'Kelompok Umur' },
-    { id: 'aparatur', label: 'Aparatur Desa' }
+    { id: 'kelompokUmur', label: 'Kelompok Umur' }
   ];
 
   return (
@@ -66,22 +68,9 @@ const DataPage: React.FC<{ data: AppData }> = ({ data }) => {
         </div>
 
         <div className="p-8">
-          {activeTab === 'aparatur' ? (
-            <div className="grid md:grid-cols-4 gap-6">
-              {data.aparatur.map(person => (
-                <div key={person.id} className="text-center">
-                  <img
-                    src={person.photo}
-                    alt={person.name}
-                    className="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
-                  />
-                  <h3 className="font-bold text-gray-800">{person.name}</h3>
-                  <p className="text-sm text-green-600">{person.position}</p>
-                </div>
-              ))}
-            </div>
-          ) : (
-            renderChart(data.chartData[activeTab as keyof ChartData], tabs.find(t => t.id === activeTab)?.label || '')
+          {renderChart(
+            data.chartData[activeTab as keyof ChartData], 
+            tabs.find(t => t.id === activeTab)?.label || ''
           )}
         </div>
       </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowLeft } from 'lucide-react';
 import type { Potensi } from '../data/types'; // Sesuaikan path jika perlu
 
+
 interface Props {
   potensi: Potensi;
   onBack: () => void;

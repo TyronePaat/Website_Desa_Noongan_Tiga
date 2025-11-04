@@ -1,14 +1,13 @@
 import type React from 'react';
 
-// --- INTERFACE BARU UNTUK SUB-ITEM ---
+// Sub-item untuk detail potensi
 export interface SubPotensi {
   id: number;
-  title: string; // <-- DIPERLUKAN (sebelumnya 'name' atau hilang)
+  title: string;
   image: string;
   description: string;
-  kontak?: string; // <-- DIPERLUKAN (tanda ? berarti opsional)
+  kontak?: string;
 }
-// --- AKHIR INTERFACE BARU ---
 
 export interface Stat {
   label: string;
@@ -16,9 +15,25 @@ export interface Stat {
   icon: string;
 }
 
-export interface VisiMisi {
-  visi: string;
-  misi: string[];
+// BARU: Informasi Umum Desa (menggantikan VisiMisi di Profil)
+export interface InformasiUmum {
+  namaDesa: string;
+  kecamatan: string;
+  kabupaten: string;
+  provinsi: string;
+  koordinat: string;
+  batasWilayah: {
+    utara: string;
+    selatan: string;
+    timur: string;
+    barat: string;
+  };
+  luasWilayah: string;
+  pembagianWilayah: {
+    jumlahDusun: number;
+    jumlahRT: number;
+    jumlahRW: number;
+  };
 }
 
 export interface Potensi {
@@ -26,12 +41,12 @@ export interface Potensi {
   title: string;
   description: string;
   image: string;
-  subItems?: SubPotensi[]; // <-- DIPERBARUI untuk menggunakan interface baru
+  subItems?: SubPotensi[];
 }
 
 export interface Maps {
   location: string;
-  satellite: string; // Ejaan 'satellite' (Inggris)
+  satellite: string;
 }
 
 export interface ChartItem {
@@ -47,6 +62,7 @@ export interface ChartData {
   kelompokUmur: ChartItem[];
 }
 
+// Aparatur dipindah untuk Pemerintah Desa
 export interface Aparatur {
   id: number;
   name: string;
@@ -98,13 +114,13 @@ export interface Hero {
 export interface AppData {
   hero: Hero;
   stats: Stat[];
-  visiMisi: VisiMisi;
+  informasiUmum: InformasiUmum; // DIUBAH dari visiMisi
   sejarah: string;
   potensi: Potensi[];
+  aparatur: Aparatur[]; // Tetap ada untuk halaman Pemerintah Desa
   maps: Maps;
   dataIntro: string;
   chartData: ChartData;
-  aparatur: Aparatur[];
   infografis: Infografis[];
   dokumen: Dokumen[];
   kontak: Kontak;
@@ -117,4 +133,3 @@ export interface MenuItem {
   label: string;
   icon: React.ComponentType<{ size?: number }>;
 }
-

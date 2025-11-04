@@ -3,14 +3,14 @@ import type { AppData, Message } from '../data/types';
 
 const KontakPage: React.FC<{ data: AppData; saveData: (data: AppData) => void }> = ({ data, saveData }) => {
   const [formData, setFormData] = useState({ nama: '', email: '', pesan: '' });
-  const [formMessage, setFormMessage] = useState<string>(''); // For form status
 
   const handleSubmit = () => {
+    // Validasi sederhana
     if (!formData.nama || !formData.email || !formData.pesan) {
-      setFormMessage('Mohon lengkapi semua field!'); // Set error
-      setTimeout(() => setFormMessage(''), 3000);
-      return;
+      return; // Tidak melakukan apa-apa jika field kosong
     }
+    
+    // Simpan pesan ke data
     const newMessage: Message = { 
       id: Date.now(), 
       ...formData, 
@@ -18,10 +18,9 @@ const KontakPage: React.FC<{ data: AppData; saveData: (data: AppData) => void }>
     };
     const newData = { ...data, messages: [...data.messages, newMessage] };
     saveData(newData);
-    setFormMessage('Pesan berhasil dikirim!'); // Set success
+    
+    // Reset form tanpa notifikasi
     setFormData({ nama: '', email: '', pesan: '' });
-    // Clear message after 3 seconds
-    setTimeout(() => setFormMessage(''), 3000);
   };
 
   return (
@@ -47,29 +46,25 @@ const KontakPage: React.FC<{ data: AppData; saveData: (data: AppData) => void }>
               placeholder="Nama"
               value={formData.nama}
               onChange={(e) => setFormData({ ...formData, nama: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
             />
             <input
               type="email"
               placeholder="Email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
             />
             <textarea
               placeholder="Pesan"
               value={formData.pesan}
               onChange={(e) => setFormData({ ...formData, pesan: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg h-32"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg h-32 focus:outline-none focus:ring-2 focus:ring-green-500"
             />
-            {formMessage && (
-              <p className={`text-sm ${formMessage.startsWith('Mohon') ? 'text-red-600' : 'text-green-600'}`}>
-                {formMessage}
-              </p>
-            )}
             <button
               onClick={handleSubmit}
-              className="w-full bg-green-700 text-white py-2 rounded-lg hover:bg-green-800"
+              disabled={!formData.nama || !formData.email || !formData.pesan}
+              className="w-full bg-green-700 text-white py-2 rounded-lg hover:bg-green-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
             >
               Kirim Pesan
             </button>
