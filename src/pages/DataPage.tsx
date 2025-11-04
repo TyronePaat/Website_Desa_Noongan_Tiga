@@ -89,4 +89,4 @@ const DataPage: React.FC<{ data: AppData }> = ({ data }) => {
   );
 };
 
-export default DataPage;    
+export default DataPage;

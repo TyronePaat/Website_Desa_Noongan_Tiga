@@ -3,10 +3,12 @@ import type { AppData, Message } from '../data/types';
 
 const KontakPage: React.FC<{ data: AppData; saveData: (data: AppData) => void }> = ({ data, saveData }) => {
   const [formData, setFormData] = useState({ nama: '', email: '', pesan: '' });
+  const [formMessage, setFormMessage] = useState<string>(''); // For form status
 
   const handleSubmit = () => {
     if (!formData.nama || !formData.email || !formData.pesan) {
-      alert('Mohon lengkapi semua field!');
+      setFormMessage('Mohon lengkapi semua field!'); // Set error
+      setTimeout(() => setFormMessage(''), 3000);
       return;
     }
     const newMessage: Message = { 
@@ -16,8 +18,10 @@ const KontakPage: React.FC<{ data: AppData; saveData: (data: AppData) => void }>
     };
     const newData = { ...data, messages: [...data.messages, newMessage] };
     saveData(newData);
-    alert('Pesan berhasil dikirim!');
+    setFormMessage('Pesan berhasil dikirim!'); // Set success
     setFormData({ nama: '', email: '', pesan: '' });
+    // Clear message after 3 seconds
+    setTimeout(() => setFormMessage(''), 3000);
   };
 
   return (
@@ -58,6 +62,11 @@ const KontakPage: React.FC<{ data: AppData; saveData: (data: AppData) => void }>
               onChange={(e) => setFormData({ ...formData, pesan: e.target.value })}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg h-32"
             />
+            {formMessage && (
+              <p className={`text-sm ${formMessage.startsWith('Mohon') ? 'text-red-600' : 'text-green-600'}`}>
+                {formMessage}
+              </p>
+            )}
             <button
               onClick={handleSubmit}
               className="w-full bg-green-700 text-white py-2 rounded-lg hover:bg-green-800"

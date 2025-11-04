@@ -1,5 +1,5 @@
 import React from 'react';
-import type { AppData } from '../data/types';
+import type { AppData } from '../data/types'; 
 
 const InfografisPage: React.FC<{ data: AppData; setLightboxImage: (img: string | null) => void }> = ({ data, setLightboxImage }) => (
   <div className="space-y-8">
@@ -11,7 +11,12 @@ const InfografisPage: React.FC<{ data: AppData; setLightboxImage: (img: string |
           className="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer transform hover:scale-105 transition-transform"
           onClick={() => setLightboxImage(info.image)}
         >
-          <img src={info.image} alt={info.title} className="w-full h-48 object-cover" />
+          <img 
+            src={info.image} 
+            alt={info.title} 
+            className="w-full h-48 object-contain bg-gray-100" 
+          />
+
           <div className="p-4">
             <h3 className="font-bold text-gray-800">{info.title}</h3>
             <span className="text-xs text-green-600">{info.category}</span>
@@ -23,3 +28,4 @@ const InfografisPage: React.FC<{ data: AppData; setLightboxImage: (img: string |
 );
 
 export default InfografisPage;
+

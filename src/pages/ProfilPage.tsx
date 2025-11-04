@@ -34,4 +34,4 @@ const ProfilPage: React.FC<{ data: AppData }> = ({ data }) => (
   </div>
 );
 
-export default ProfilPage;  
+export default ProfilPage;

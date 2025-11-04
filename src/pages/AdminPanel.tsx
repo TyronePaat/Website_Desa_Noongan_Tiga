@@ -1,27 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { AppData } from '../data/types';
+import { initialData } from '../data/initialData'; // Import initialData
 
 const AdminPanel: React.FC<{ data: AppData; saveData: (data: AppData) => void }> = ({ data, saveData }) => {
   const [activeSection, setActiveSection] = useState<string>('hero');
-  const [editData, setEditData] = useState<AppData | null>(null);
+  const [editData, setEditData] = useState<AppData>(data);
 
-  const sections = [
-    { id: 'hero', label: 'Hero Banner' },
-    { id: 'stats', label: 'Data Umum' },
-    { id: 'visiMisi', label: 'Visi & Misi' },
-    { id: 'sejarah', label: 'Sejarah' },
-    { id: 'potensi', label: 'Potensi Desa' },
-    { id: 'aparatur', label: 'Aparatur' },
-    { id: 'kontak', label: 'Kontak' },
-    { id: 'messages', label: 'Pesan Masuk' }
-  ];
+  useEffect(() => {
+    setEditData(data);
+  }, [data]);
 
   const handleSave = () => {
-    saveData(editData || data);
+    saveData(editData);
     alert('Data berhasil disimpan!');
   };
 
-  const currentData = editData || data;
+  const currentData = editData || initialData;
+  
+  // Definisikan sections di sini
+  const sections = [
+    { id: 'hero', label: 'Hero Banner' },
+    { id: 'stats', label: 'Data Umum' },
+    // Tambahkan section lain di sini jika Anda membuatnya
+    { id: 'messages', label: 'Pesan Masuk' }
+  ];
+
 
   return (
     <div className="space-y-8">
@@ -117,8 +120,6 @@ const AdminPanel: React.FC<{ data: AppData; saveData: (data: AppData) => void }>
               )}
             </div>
           )}
-
-          {/* Add more sections as needed */}
         </div>
 
         <div className="border-t p-6">

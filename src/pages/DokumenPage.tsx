@@ -32,4 +32,4 @@ const DokumenPage: React.FC<{ data: AppData }> = ({ data }) => {
   );
 };
 
-export default DokumenPage; 
+export default DokumenPage;

@@ -1,7 +1,15 @@
-// src/data/types.ts
-import React from 'react';
+import type React from 'react';
 
-// Type Definitions
+// --- INTERFACE BARU UNTUK SUB-ITEM ---
+export interface SubPotensi {
+  id: number;
+  title: string; // <-- DIPERLUKAN (sebelumnya 'name' atau hilang)
+  image: string;
+  description: string;
+  kontak?: string; // <-- DIPERLUKAN (tanda ? berarti opsional)
+}
+// --- AKHIR INTERFACE BARU ---
+
 export interface Stat {
   label: string;
   value: string;
@@ -18,11 +26,12 @@ export interface Potensi {
   title: string;
   description: string;
   image: string;
+  subItems?: SubPotensi[]; // <-- DIPERBARUI untuk menggunakan interface baru
 }
 
 export interface Maps {
   location: string;
-  satellite: string;
+  satellite: string; // Ejaan 'satellite' (Inggris)
 }
 
 export interface ChartItem {
@@ -108,3 +117,4 @@ export interface MenuItem {
   label: string;
   icon: React.ComponentType<{ size?: number }>;
 }
+
