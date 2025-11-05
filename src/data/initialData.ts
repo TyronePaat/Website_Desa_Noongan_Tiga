@@ -28,14 +28,14 @@ export const initialData: AppData = {
       id: 1,
       title: "Pertanian",
       description: "Lahan pertanian yang subur dengan hasil panen padi, jagung, dan sayuran berkualitas tinggi",
-      image: "/pertanianimg.jpg", // Diperbaiki: Path diawali dengan /
+      image: "https://images.unsplash.com/photo-1556740738-b6a63e27c4df?w=400", // Diperbaiki: Path diawali dengan /
       
       // Data sub-item untuk halaman detail
       subItems: [
         {
           id: 101,
           title: "Tomat Segar", // Diperbaiki: 'name' menjadi 'title'
-          image: "/pertanianimg.jpg",
+          image: "https://images.unsplash.com/photo-1556740738-b6a63e27c4df?w=400",
           description: "Tomat segar hasil panen lokal, ditanam secara organik.",
           kontak: "0812-3456-001 (Bapak Tani Tomat)" // Data kontak baru
         },
@@ -72,7 +72,7 @@ export const initialData: AppData = {
   ],
   maps: {
     location: "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d296.48735413134176!2d124.81040680472832!3d1.129957456871402!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sid!2sid!4v1761912749838!5m2!1sid!2sid",
-    satellite: "/petadesa.jpg" // Diperbaiki: Path diawali dengan /
+    satellite: "public/petadesa.jpg" // Diperbaiki: Path diawali dengan /
   },
   dataIntro: "Halaman ini menyajikan data demografis dan statistik Desa Noongan Tiga untuk memberikan gambaran komprehensif tentang kondisi masyarakat desa.",
   chartData: {
@@ -116,7 +116,7 @@ export const initialData: AppData = {
     { id: 4, name: "Dewi Lestari", position: "Kaur Umum", photo: "https://i.pravatar.cc/150?img=9" }
   ],
   infografis: [
-    { id: 1, title: "Infografis 1", image: "/infografiskentang.jpg", category: "Statistik" }, // Diperbaiki: Path
+    { id: 1, title: "Infografis 1", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400", category: "Statistik" }, // Diperbaiki: Path
     { id: 2, title: "Infografis 2", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400", category: "Ekonomi" },
     { id: 3, title: "Infografis 3", image: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=400", category: "Kesehatan" },
     { id: 4, title: "Infografis 4", image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400", category: "Pendidikan" }
