@@ -4,9 +4,12 @@ import { Home, FileText, MapPin, BarChart3, Image, FolderOpen, Phone, Users, Men
 import { initialData } from './data/initialData';
 import type { AppData, MenuItem, Potensi } from './data/types';
 
+// ✅ IMPORT FIREBASE SERVICES
+import { loadDesaData, saveDesaData, loadMessages, saveMessage, initializeFirebaseData } from './services/firebaseService';
+
 import HomePage from './pages/HomePage';
 import ProfilPage from './pages/ProfilPage';
-import PemerintahDesaPage from './pages/PemerintahDesaPage'; // BARU
+import PemerintahDesaPage from './pages/PemerintahDesaPage';
 import PotensiPage from './pages/PotensiPage';
 import PetaPage from './pages/PetaPage';
 import DataPage from './pages/DataPage';
@@ -28,42 +31,53 @@ const App: React.FC = () => {
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const [loginError, setLoginError] = useState<string>('');
 
+  // ✅ GANTI useEffect untuk load dari Firebase
   useEffect(() => {
-    const loadData = () => {
+    const loadAllData = async () => {
       try {
-        const savedData = localStorage.getItem('desa-data');
-        if (savedData) {
-          const parsedData = JSON.parse(savedData);
-          
-          // MIGRATION: If old data doesn't have informasiUmum, merge with initialData
-          if (!parsedData.informasiUmum) {
-            const migratedData = {
-              ...initialData,
-              ...parsedData,
-              informasiUmum: initialData.informasiUmum
-            };
-            setData(migratedData);
-            // Save migrated data back to localStorage
-            localStorage.setItem('desa-data', JSON.stringify(migratedData));
-          } else {
-            setData(parsedData);
-          }
-        }
+        console.log('🔄 Loading data from Firebase...');
+        
+        // Initialize Firebase if first time
+        await initializeFirebaseData();
+        
+        // Load desa data
+        const desaData = await loadDesaData();
+        console.log('✅ Desa data loaded from Firebase:', desaData);
+        
+        // Load messages
+        const messages = await loadMessages();
+        console.log('✅ Messages loaded from Firebase:', messages.length, 'messages');
+        
+        // Combine data
+        const combinedData = {
+          ...desaData,
+          messages: messages
+        };
+        
+        setData(combinedData);
       } catch (error) {
-        console.log('No saved data, using defaults');
+        console.error('❌ Error loading data from Firebase:', error);
+        // Fallback to initial data if Firebase fails
+        setData(initialData);
       } finally {
         setLoading(false);
       }
     };
-    loadData();
+    
+    loadAllData();
   }, []);
 
-  const saveData = (newData: AppData) => {
+  // ✅ GANTI saveData function untuk save ke Firebase
+  const saveData = async (newData: AppData) => {
     setData(newData);
+    
     try {
-      localStorage.setItem('desa-data', JSON.stringify(newData));
+      console.log('💾 Saving data to Firebase...');
+      await saveDesaData(newData);
+      console.log('✅ Data saved to Firebase successfully!');
     } catch (error) {
-      console.error('Error saving data:', error);
+      console.error('❌ Error saving data to Firebase:', error);
+      alert('Gagal menyimpan data ke Firebase. Silakan coba lagi.');
     }
   };
 
@@ -87,16 +101,18 @@ const App: React.FC = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="text-2xl text-green-700">Memuat...</div>
+        <div className="text-center">
+          <div className="text-2xl text-green-700 mb-2">Memuat data dari Firebase...</div>
+          <div className="text-sm text-gray-500">Mohon tunggu sebentar</div>
+        </div>
       </div>
     );
   }
 
-  // DIUBAH: Menu items dengan Pemerintah Desa
   const menuItems: MenuItem[] = [
     { id: 'home', label: 'Beranda', icon: Home },
     { id: 'profil', label: 'Profil Desa', icon: FileText },
-    { id: 'pemerintah', label: 'Pemerintah Desa', icon: Building2 }, // BARU
+    { id: 'pemerintah', label: 'Pemerintah Desa', icon: Building2 },
     { id: 'potensi', label: 'Potensi Desa', icon: Users },
     { id: 'peta', label: 'Peta Desa', icon: MapPin },
     { id: 'data', label: 'Data Desa', icon: BarChart3 },
@@ -115,12 +131,11 @@ const App: React.FC = () => {
     setMobileMenuOpen(false);
   };
 
-  // DIUBAH: Render page dengan halaman baru
   const renderPage = () => {
     switch (currentPage) {
       case 'home': return <HomePage data={data} />;
       case 'profil': return <ProfilPage data={data} />;
-      case 'pemerintah': return <PemerintahDesaPage data={data} />; // BARU
+      case 'pemerintah': return <PemerintahDesaPage data={data} />;
       case 'potensi':
         if (selectedPotensi) {
           return (
