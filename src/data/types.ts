@@ -133,3 +133,4 @@ export interface MenuItem {
   label: string;
   icon: React.ComponentType<{ size?: number }>;
 }
+
