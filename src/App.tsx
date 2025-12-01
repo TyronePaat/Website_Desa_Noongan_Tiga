@@ -3,9 +3,10 @@ import { Home, FileText, MapPin, BarChart3, Image, FolderOpen, Phone, Users, Men
 
 import { initialData } from './data/initialData';
 import type { AppData, MenuItem, Potensi } from './data/types';
-
+import TimKamiPage from './pages/TimKamiPage';
+import { Users as UsersIcon } from 'lucide-react';
 // ✅ IMPORT FIREBASE SERVICES
-import { loadDesaData, saveDesaData, loadMessages, saveMessage, initializeFirebaseData } from './services/firebaseService';
+import { loadDesaData, saveDesaData, loadMessages, initializeFirebaseData } from './services/firebaseService';
 
 import HomePage from './pages/HomePage';
 import ProfilPage from './pages/ProfilPage';
@@ -118,6 +119,7 @@ const App: React.FC = () => {
     { id: 'data', label: 'Data Desa', icon: BarChart3 },
     { id: 'infografis', label: 'Infografis', icon: Image },
     { id: 'dokumen', label: 'Dokumen', icon: FolderOpen },
+    { id: 'timkami', label: 'Tim Kami', icon: UsersIcon }, // TAMBAHKAN BARIS INI
     { id: 'kontak', label: 'Kontak', icon: Phone }
   ];
 
@@ -155,6 +157,7 @@ const App: React.FC = () => {
       case 'data': return <DataPage data={data} />;
       case 'infografis': return <InfografisPage data={data} setLightboxImage={setLightboxImage} />;
       case 'dokumen': return <DokumenPage data={data} />;
+      case 'timkami': return <TimKamiPage data={data} />;
       case 'kontak': return <KontakPage data={data} saveData={saveData} />;
       case 'admin': return isAdmin ? <AdminPanel data={data} saveData={saveData} /> : <HomePage data={data} />;
       default: return <HomePage data={data} />;

@@ -46,7 +46,9 @@ export interface Potensi {
 
 export interface Maps {
   location: string;
+  //ruangan: string;
   satellite: string;
+  
 }
 
 export interface ChartItem {
@@ -134,3 +136,32 @@ export interface MenuItem {
   icon: React.ComponentType<{ size?: number }>;
 }
 
+// Tambahkan interface baru di bagian bawah file types.ts (sebelum export interface AppData)
+
+export interface TimKKT {
+  id: number;
+  nama: string;
+  nim: string;
+  prodi: string;
+  foto: string;
+  posisi: string; // misal: "Ketua", "Anggota", dll
+}
+
+// Update interface AppData - tambahkan timKKT
+export interface AppData {
+  hero: Hero;
+  stats: Stat[];
+  informasiUmum: InformasiUmum;
+  sejarah: string;
+  potensi: Potensi[];
+  aparatur: Aparatur[];
+  maps: Maps;
+  dataIntro: string;
+  chartData: ChartData;
+  infografis: Infografis[];
+  dokumen: Dokumen[];
+  kontak: Kontak;
+  socialMedia: SocialMedia;
+  messages: Message[];
+  timKKT: TimKKT[]; // TAMBAHKAN BARIS INI
+}

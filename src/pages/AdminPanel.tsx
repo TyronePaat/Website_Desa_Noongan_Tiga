@@ -23,6 +23,7 @@ const AdminPanel: React.FC<{ data: AppData; saveData: (data: AppData) => void }>
     { id: 'sejarah', label: 'Sejarah' },
     { id: 'potensi', label: 'Potensi Desa' },
     { id: 'aparatur', label: 'Pemerintah Desa' },
+    { id: 'timkkt', label: 'Tim KKT' },
     { id: 'infografis', label: 'Infografis' },
     { id: 'dokumen', label: 'Dokumen' },
     { id: 'kontak', label: 'Kontak & Sosmed' },
@@ -560,6 +561,163 @@ const AdminPanel: React.FC<{ data: AppData; saveData: (data: AppData) => void }>
             </div>
           )}
 
+          {activeSection === 'timkkt' && (
+            <div className="space-y-6">
+              <div className="flex justify-between items-center">
+                <h2 className="text-2xl font-bold">Tim KKT</h2>
+                <button
+                  onClick={() => {
+                    const newAnggota = {
+                      id: Date.now(),
+                      nama: "Nama Mahasiswa",
+                      nim: "123456789",
+                      prodi: "Program Studi",
+                      foto: "https://i.pravatar.cc/300?img=1",
+                      posisi: "Anggota"
+                    };
+                    setEditData({ 
+                      ...currentData, 
+                      timKKT: currentData.timKKT ? [...currentData.timKKT, newAnggota] : [newAnggota]
+                    });
+                  }}
+                  className="flex items-center space-x-2 px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800"
+                >
+                  <Plus size={18} />
+                  <span>Tambah Anggota</span>
+                </button>
+              </div>
+
+              {/* Panduan Upload Foto */}
+              <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-lg">
+                <h3 className="font-bold text-blue-900 mb-2">📸 Tips Upload Foto:</h3>
+                <ul className="text-sm text-blue-800 space-y-1 list-disc list-inside">
+                  <li><strong>Rasio 1:1 (Persegi)</strong> - Foto 300x300px atau 500x500px ideal</li>
+                  <li><strong>Upload ke layanan gratis:</strong> Imgur.com, ImgBB.com, atau Google Drive</li>
+                  <li><strong>Wajah di tengah</strong> - Pastikan wajah tidak terpotong</li>
+                  <li><strong>Background netral</strong> - Warna polos lebih baik</li>
+                  <li>Jika foto tidak persegi, akan di-crop otomatis saat ditampilkan</li>
+                </ul>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                {(currentData.timKKT || []).map((anggota, idx) => (
+                  <div key={anggota.id} className="border rounded-lg p-4 bg-gray-50">
+                    <div className="flex justify-between items-start mb-3">
+                      <span className="text-sm font-semibold text-gray-500">Anggota #{idx + 1}</span>
+                      <button
+                        onClick={() => {
+                          const newTimKKT = currentData.timKKT?.filter((_, i) => i !== idx) || [];
+                          setEditData({ ...currentData, timKKT: newTimKKT });
+                        }}
+                        className="text-red-600 hover:text-red-800"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
+                    
+                    {/* Preview Foto */}
+                    <div className="mb-3">
+                      <div className="w-24 h-24 mx-auto rounded-lg overflow-hidden border-2 border-gray-300">
+                        <img 
+                          src={anggota.foto} 
+                          alt={anggota.nama}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-3">
+                      <div>
+                        <label className="block text-xs font-semibold mb-1">Nama Lengkap</label>
+                        <input
+                          type="text"
+                          value={anggota.nama}
+                          onChange={(e) => {
+                            const newTimKKT = [...(currentData.timKKT || [])];
+                            newTimKKT[idx].nama = e.target.value;
+                            setEditData({ ...currentData, timKKT: newTimKKT });
+                          }}
+                          className="w-full px-3 py-2 border rounded-lg"
+                          placeholder="John Doe"
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className="block text-xs font-semibold mb-1">NIM</label>
+                        <input
+                          type="text"
+                          value={anggota.nim}
+                          onChange={(e) => {
+                            const newTimKKT = [...(currentData.timKKT || [])];
+                            newTimKKT[idx].nim = e.target.value;
+                            setEditData({ ...currentData, timKKT: newTimKKT });
+                          }}
+                          className="w-full px-3 py-2 border rounded-lg"
+                          placeholder="123456789"
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className="block text-xs font-semibold mb-1">Program Studi</label>
+                        <input
+                          type="text"
+                          value={anggota.prodi}
+                          onChange={(e) => {
+                            const newTimKKT = [...(currentData.timKKT || [])];
+                            newTimKKT[idx].prodi = e.target.value;
+                            setEditData({ ...currentData, timKKT: newTimKKT });
+                          }}
+                          className="w-full px-3 py-2 border rounded-lg"
+                          placeholder="Teknik Informatika"
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className="block text-xs font-semibold mb-1">Posisi/Jabatan</label>
+                        <select
+                          value={anggota.posisi}
+                          onChange={(e) => {
+                            const newTimKKT = [...(currentData.timKKT || [])];
+                            newTimKKT[idx].posisi = e.target.value;
+                            setEditData({ ...currentData, timKKT: newTimKKT });
+                          }}
+                          className="w-full px-3 py-2 border rounded-lg"
+                        >
+                          <option value="Ketua">Ketua</option>
+                          <option value="Wakil Ketua">Wakil Ketua</option>
+                          <option value="Sekretaris">Sekretaris</option>
+                          <option value="Bendahara">Bendahara</option>
+                          <option value="Anggota">Anggota</option>
+                        </select>
+                      </div>
+                      
+                      <div>
+                        <label className="block text-xs font-semibold mb-1">
+                          URL Foto 
+                          <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          value={anggota.foto}
+                          onChange={(e) => {
+                            const newTimKKT = [...(currentData.timKKT || [])];
+                            newTimKKT[idx].foto = e.target.value;
+                            setEditData({ ...currentData, timKKT: newTimKKT });
+                          }}
+                          className="w-full px-3 py-2 border rounded-lg"
+                          placeholder="https://i.imgur.com/xxx.jpg"
+                        />
+                        <p className="text-xs text-gray-500 mt-1">
+                          Upload foto ke <a href="https://imgur.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Imgur.com</a> lalu copy link-nya
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+            
           {/* Infografis */}
           {activeSection === 'infografis' && (
             <div className="space-y-6">

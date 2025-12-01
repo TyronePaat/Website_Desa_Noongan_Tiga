@@ -85,6 +85,7 @@ export const initialData: AppData = {
   ],
   maps: {
     location: "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d296.48735413134176!2d124.81040680472832!3d1.129957456871402!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sid!2sid!4v1761912749838!5m2!1sid!2sid",
+    //ruangan: "/petahidup1.jpg",
     satellite: "/petadesa.jpg"
   },
   dataIntro: "Halaman ini menyajikan data demografis dan statistik Desa Noongan Tiga untuk memberikan gambaran komprehensif tentang kondisi masyarakat desa.",
@@ -144,5 +145,39 @@ export const initialData: AppData = {
     instagram: "#",
     youtube: "#"
   },
+  timKKT: [
+    {
+      id: 1,
+      nama: "John Doe",
+      nim: "123456789",
+      prodi: "Teknik Informatika",
+      foto: "https://i.pravatar.cc/300?img=1",
+      posisi: "Ketua"
+    },
+    {
+      id: 2,
+      nama: "Jane Smith",
+      nim: "987654321",
+      prodi: "Sistem Informasi",
+      foto: "https://i.pravatar.cc/300?img=5",
+      posisi: "Sekretaris"
+    },
+    {
+      id: 3,
+      nama: "Bob Wilson",
+      nim: "456789123",
+      prodi: "Teknik Elektro",
+      foto: "https://i.pravatar.cc/300?img=12",
+      posisi: "Anggota"
+    },
+    {
+      id: 4,
+      nama: "Alice Brown",
+      nim: "321654987",
+      prodi: "Manajemen",
+      foto: "https://i.pravatar.cc/300?img=9",
+      posisi: "Anggota"
+    }
+  ],
   messages: []
 };

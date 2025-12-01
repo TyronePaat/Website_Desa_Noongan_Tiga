@@ -108,6 +108,8 @@ const ProfilPage: React.FC<{ data: AppData }> = ({ data }) => {
         <h2 className="text-2xl font-bold text-green-700 mb-4">Sejarah Desa</h2>
         <p className="text-gray-700 leading-relaxed text-justify">{data.sejarah}</p>
       </div>
+
+      
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc, collection, addDoc, getDocs, deleteDoc, Timestamp } from 'firebase/firestore';
+import { doc, getDoc, setDoc, collection, getDocs, deleteDoc, Timestamp } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import type { AppData, Message } from '../data/types';
 import { initialData } from '../data/initialData';
